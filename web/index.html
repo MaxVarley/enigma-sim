@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Enigma Machine Simulator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <script src="enigma.js"></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title has-text-centered">Enigma Machine Simulator</h1>
+
+    <div class="field">
+      <label class="label">Message</label>
+      <div class="control">
+        <input class="input" id="inputText" type="text" placeholder="HELLOWORLD" />
+      </div>
+    </div>
+
+    <!-- Rotor Configuration Blocks -->
+    <div class="columns">
+      <!-- Rotor 1 -->
+      <div class="column">
+        <div class="box">
+          <h2 class="subtitle">Rotor 1</h2>
+
+          <label class="label">Type</label>
+          <div class="select">
+            <select id="rotor1-type">
+              <option>I</option>
+              <option>II</option>
+              <option>III</option>
+              <option>IV</option>
+              <option>V</option>
+            </select>
+          </div>
+
+          <label class="label mt-3">Initial Position</label>
+          <div class="select">
+            <select id="rotor1-position">
+              <!-- A-Z -->
+              <!-- Will populate via JS or manually -->
+              <script>
+                for (let i = 65; i <= 90; i++) {
+                  document.write(`<option>${String.fromCharCode(i)}</option>`);
+                }
+              </script>
+            </select>
+          </div>
+
+          <label class="label mt-3">Ring Setting</label>
+          <div class="select">
+            <select id="rotor1-ring">
+              <!-- 01-26 -->
+              <script>
+                for (let i = 1; i <= 26; i++) {
+                  document.write(`<option>${String(i).padStart(2, '0')}</option>`);
+                }
+              </script>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rotor 2 -->
+      <div class="column">
+        <div class="box">
+          <h2 class="subtitle">Rotor 2</h2>
+
+          <label class="label">Type</label>
+          <div class="select">
+            <select id="rotor2-type">
+              <option>I</option>
+              <option>II</option>
+              <option>III</option>
+              <option>IV</option>
+              <option>V</option>
+            </select>
+          </div>
+
+          <label class="label mt-3">Initial Position</label>
+          <div class="select">
+            <select id="rotor2-position">
+              <script>
+                for (let i = 65; i <= 90; i++) {
+                  document.write(`<option>${String.fromCharCode(i)}</option>`);
+                }
+              </script>
+            </select>
+          </div>
+
+          <label class="label mt-3">Ring Setting</label>
+          <div class="select">
+            <select id="rotor2-ring">
+              <script>
+                for (let i = 1; i <= 26; i++) {
+                  document.write(`<option>${String(i).padStart(2, '0')}</option>`);
+                }
+              </script>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Rotor 3 -->
+      <div class="column">
+        <div class="box">
+          <h2 class="subtitle">Rotor 3</h2>
+
+          <label class="label">Type</label>
+          <div class="select">
+            <select id="rotor3-type">
+              <option>I</option>
+              <option>II</option>
+              <option>III</option>
+              <option>IV</option>
+              <option>V</option>
+            </select>
+          </div>
+
+          <label class="label mt-3">Initial Position</label>
+          <div class="select">
+            <select id="rotor3-position">
+              <script>
+                for (let i = 65; i <= 90; i++) {
+                  document.write(`<option>${String.fromCharCode(i)}</option>`);
+                }
+              </script>
+            </select>
+          </div>
+
+          <label class="label mt-3">Ring Setting</label>
+          <div class="select">
+            <select id="rotor3-ring">
+              <script>
+                for (let i = 1; i <= 26; i++) {
+                  document.write(`<option>${String(i).padStart(2, '0')}</option>`);
+                }
+              </script>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Plugboard and Encrypt -->
+    <div class="field">
+      <label class="label">Plugboard Pairs</label>
+      <div class="control">
+        <input class="input" id="plugboard" type="text" value="AB CD EF GH" />
+      </div>
+    </div>
+
+    <div class="field is-grouped is-grouped-centered mt-5">
+      <div class="control">
+        <button class="button is-primary" onclick="runEnigma()">Encrypt</button>
+      </div>
+    </div>
+
+    <div class="content mt-6">
+      <h2 class="subtitle">Encrypted Output:</h2>
+      <div id="output" class="box has-background-light"></div>
+    </div>
+  </div>
+</section>
+</body>
+</html>
