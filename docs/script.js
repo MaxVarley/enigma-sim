@@ -18,8 +18,7 @@ function runEnigma() {
     document.querySelector("#rotor1-ring-window .shown").textContent,
     document.querySelector("#rotor2-ring-window .shown").textContent,
     document.querySelector("#rotor3-ring-window .shown").textContent
-  ].join(" ");
-  
+  ].map(s => String(parseInt(s, 10) - 1).padStart(2, '0')).join(" ");  
   
 
   const encrypt = Module.cwrap("encryptMessage", "string", [
