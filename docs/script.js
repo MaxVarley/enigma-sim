@@ -154,17 +154,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     btn.addEventListener("click", () => {
       if (plugPairs[letter]) {
-        // Already paired — remove both
         const other = plugPairs[letter];
         delete plugPairs[letter];
         delete plugPairs[other];
+        delete pairColors[letter];
+        delete pairColors[other];
+      
         const otherBtn = document.querySelector(`[data-letter='${other}']`);
         otherBtn.classList.remove("paired");
         otherBtn.style.backgroundColor = "";
-
+      
         btn.classList.remove("paired");
         btn.style.backgroundColor = "";
-
+      
         updatePlugboardString();
         return;
       }
