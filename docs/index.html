@@ -257,25 +257,50 @@
     </div>
   
     <!-- Info Tabs -->
-    <div id="tab-history" class="tab-content">
-      <p>
-        The Enigma machine was a cipher device used primarily by Nazi Germany during World War II
-        to encrypt military communications. Though originally a commercial invention, the machine
-        was adapted for military use and thought unbreakable until Allied efforts at Bletchley Park
-        — led by figures like Alan Turing — successfully cracked its codes, dramatically influencing
-        the outcome of the war.
-      </p>
+    <div class="box mt-6">
+      <h2 class="subtitle">About the Enigma Machine</h2>
+    
+      <div class="tabs is-toggle is-toggle-rounded is-fullwidth">
+        <ul>
+          <li class="is-active" id="tab-history-tab"><a>History</a></li>
+          <li id="tab-rotors-tab"><a>Rotors</a></li>
+          <li id="tab-reflector-tab"><a>Reflector</a></li>
+          <li id="tab-plugboard-tab"><a>Plugboard</a></li>
+        </ul>
+      </div>
+    
+      <div id="tab-history" class="tab-content">
+        <p>
+          The Enigma machine was a cipher device used by Nazi Germany during WWII to encrypt communications.
+          Allied cryptographers, notably at Bletchley Park under Alan Turing, cracked the cipher — a pivotal moment in the war.
+        </p>
+      </div>
+    
+      <div id="tab-rotors" class="tab-content is-hidden">
+        <p>
+          Rotors perform the core substitution of letters. Each rotor contains a scrambled alphabet and rotates with each keypress.
+          As they rotate, the encryption mapping changes, creating a polyalphabetic cipher. The stepping mechanism ensures one rotor turns the next,
+          similar to a mechanical odometer.
+        </p>
+      </div>
+    
+      <div id="tab-reflector" class="tab-content is-hidden">
+        <p>
+          The reflector returns the signal back through the rotors along a different path.
+          It ensures encryption is reciprocal — the same settings will both encrypt and decrypt.
+          This design choice, however, meant a letter could never encrypt to itself — a flaw exploited by Allied cryptanalysts.
+        </p>
+      </div>
+    
+      <div id="tab-plugboard" class="tab-content is-hidden">
+        <p>
+          The plugboard (Steckerbrett) allowed pairs of letters to be swapped before and after rotor encryption,
+          vastly increasing the possible configurations. Operators connected cables between letter pairs,
+          adding a configurable layer of complexity to the cipher.
+        </p>
+      </div>
     </div>
-  
-    <div id="tab-mechanics" class="tab-content is-hidden">
-      <p>
-        The Enigma operates via a series of rotating rotors, each implementing a different substitution cipher.
-        When a key is pressed, the electrical signal passes through the plugboard, rotors, and reflector,
-        then returns through the rotors and plugboard again to light up the encoded letter.
-        The rotors advance with each key press, introducing a polyalphabetic cipher.
-      </p>
-    </div>
-  </div>
+    
   
 
   <div class="has-text-centered mt-6">
