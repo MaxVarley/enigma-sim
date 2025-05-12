@@ -24,6 +24,12 @@ function runEnigma() {
     "string", "string", "string", "string", "string"
   ]);
 
+  console.log("INPUT", input);
+  console.log("ROTORS", rotorTypes);
+  console.log("POSITIONS", rotorPositions);
+  console.log("RINGS", ringSettings);
+  console.log("PLUGBOARD", plugboard);
+
   const result = encrypt(input, rotorTypes, rotorPositions, ringSettings, plugboard);
   document.getElementById("output").textContent = result;
 }
