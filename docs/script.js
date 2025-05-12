@@ -9,16 +9,15 @@ function runEnigma() {
   ].join(" ");
 
   const rotorPositions = [
-    document.getElementById("rotor1-letter").textContent,
-    document.getElementById("rotor2-letter")?.textContent || "A",
-    document.getElementById("rotor3-letter")?.textContent || "A"
+    document.querySelector("#rotor1-letter-window .shown").textContent,
+    document.querySelector("#rotor2-letter-window .shown").textContent,
+    document.querySelector("#rotor3-letter-window .shown").textContent
   ].join("");
   
-  // Convert rotor positions to zero-based index
   const ringSettings = [
-    document.getElementById("rotor1-ring").textContent,
-    document.getElementById("rotor2-ring").textContent,
-    document.getElementById("rotor3-ring").textContent
+    document.querySelector("#rotor1-ring-window .shown").textContent,
+    document.querySelector("#rotor2-ring-window .shown").textContent,
+    document.querySelector("#rotor3-ring-window .shown").textContent
   ].join(" ");
   
 
@@ -50,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const animateAndSet = (windowEl, newVal, direction) => {
-    const [shownEl, hiddenEl] = windowEl.querySelectorAll(".rotor-letter");
+    const [shownEl, hiddenEl] = windowEl.querySelectorAll(".shown, .hidden");
+
     
     // Setup hidden element with new value
     hiddenEl.textContent = newVal;
