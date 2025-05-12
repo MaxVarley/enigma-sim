@@ -49,6 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  const animateAndSet = (el, newVal, direction) => {
+    const className = direction === "up" ? "spin-up" : "spin-down";
+    el.classList.add(className);
+    setTimeout(() => {
+      el.textContent = newVal;
+      el.classList.remove(className);
+    }, 150); // duration matches your CSS transition
+  };  
+
   // Rotor Spinners
   const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
 
@@ -59,12 +68,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
-      display.textContent = alphabet[index];
+      animateAndSet(display, alphabet[index], "up");
+
     });
 
     spinner.querySelector(".rotor-btn.down").addEventListener("click", () => {
       index = (index + 1) % 26;
-      display.textContent = alphabet[index];
+      animateAndSet(display, alphabet[index], "down");
+
     });
   });
 
@@ -76,12 +87,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
-      display.textContent = String(index + 1).padStart(2, '0');
+      animateAndSet(display, String(index + 1).padStart(2, '0'), "up");
     });
 
     spinner.querySelector(".rotor-btn.down").addEventListener("click", () => {
       index = (index + 1) % 26;
-      display.textContent = String(index + 1).padStart(2, '0');
+      animateAndSet(display, String(index + 1).padStart(2, '0'), "down");
     });
   });
 
