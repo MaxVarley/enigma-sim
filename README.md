@@ -36,7 +36,7 @@ This project lets users experiment with the historic German Cipher machine, prim
 Try these settings for a known enigma output:
 | Setting        | Value         |
 |----------------|---------------|
-| Rotors         | III, II, I (right to left) |
+| Rotors         | III, II, I |
 | Positions      | A, A, A       |
 | Ring Settings  | 01, 01, 01    |
 | Plugboard      | *(none)*     |
