@@ -33,6 +33,16 @@ Module.onRuntimeInitialized = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  function getColor(index) {
+    const colors = [
+      '#d32f2f', '#1976d2', '#388e3c', '#f57c00', '#7b1fa2',
+      '#00796b', '#c2185b', '#512da8', '#455a64', '#5d4037',
+      '#303f9f', '#0097a7', '#689f38'
+    ];
+    return colors[index % colors.length];
+  }
+
   //  Tabs
   const tabs = document.querySelectorAll(".tabs ul li");
   const contents = document.querySelectorAll(".tab-content");
@@ -127,6 +137,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const plugboardContainer = document.getElementById("plugboard-ui");
   const hiddenPlugboard = document.getElementById("plugboard");
   const plugPairs = {};
+  let pairIndex = 0;
+  const pairColors = {};
   let selected = null;
 
   const updatePlugboardString = () => {
@@ -146,8 +158,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const other = plugPairs[letter];
         delete plugPairs[letter];
         delete plugPairs[other];
-        document.querySelector(`[data-letter='${other}']`).classList.remove("paired");
+        const otherBtn = document.querySelector(`[data-letter='${other}']`);
+        otherBtn.classList.remove("paired");
+        otherBtn.style.backgroundColor = "";
+
         btn.classList.remove("paired");
+        btn.style.backgroundColor = "";
+
         updatePlugboardString();
         return;
       }
@@ -166,9 +183,18 @@ document.addEventListener("DOMContentLoaded", () => {
         plugPairs[selected] = letter;
         plugPairs[letter] = selected;
 
-        document.querySelector(`[data-letter='${selected}']`).classList.remove("selected");
-        document.querySelector(`[data-letter='${selected}']`).classList.add("paired");
+        const color = getColor(pairIndex++);
+        pairColors[selected] = color;
+        pairColors[letter] = color;
+
+        const firstBtn = document.querySelector(`[data-letter='${selected}']`);
+        firstBtn.classList.remove("selected");
+        firstBtn.classList.add("paired");
+        firstBtn.style.backgroundColor = color;
+
         btn.classList.add("paired");
+        btn.style.backgroundColor = color;
+
 
         selected = null;
         updatePlugboardString();
