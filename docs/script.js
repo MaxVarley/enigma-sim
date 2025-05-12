@@ -83,12 +83,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Rotor Spinners
   const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
-
   document.querySelectorAll(".rotor-spin").forEach(spinner => {
     const rotorId = spinner.dataset.rotor;
     const windowEl = document.getElementById(rotorId + "-letter-window");
     const display = windowEl.querySelector(".shown");
-    let index = alphabet.indexOf(display.textContent.trim());
+    let index = alphabet.indexOf(display?.textContent.trim());
+    if (index === -1) index = 0;
   
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", () => {
       index = (index + 1) % 26;
       animateAndSet(windowEl, alphabet[index], "down");
     });
-  });
+  });  
   
 
   // Ring Spinners
@@ -107,7 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const ringId = spinner.dataset.ring;
     const windowEl = document.getElementById(ringId + "-ring-window");
     const display = windowEl.querySelector(".shown");
-    let index = parseInt(display.textContent.trim(), 10) - 1 || 0;
+    let parsed = parseInt(display.textContent.trim(), 10);
+    let index = isNaN(parsed) ? 0 : parsed - 1;
+
   
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
