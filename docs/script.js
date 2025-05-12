@@ -9,11 +9,11 @@ function runEnigma() {
   ].join(" ");
 
   const rotorPositions = [
-    document.getElementById("rotor1-position").value,
-    document.getElementById("rotor2-position").value,
-    document.getElementById("rotor3-position").value
+    document.getElementById("rotor1-letter").textContent,
+    document.getElementById("rotor2-letter")?.textContent || "A",
+    document.getElementById("rotor3-letter")?.textContent || "A"
   ].join("");
-
+  
   // Convert rotor positions to zero-based index
   const ringSettings = [
     parseInt(document.getElementById("rotor1-ring").value, 10) - 1,
@@ -35,6 +35,7 @@ Module.onRuntimeInitialized = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  //  Tabs
   const tabs = document.querySelectorAll(".tabs ul li");
   const contents = document.querySelectorAll(".tab-content");
 
@@ -45,6 +46,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
       tab.classList.add("is-active");
       contents[i].classList.remove("is-hidden");
+    });
+  });
+
+  // Rotor Spinners
+  const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+
+  document.querySelectorAll(".rotor-spin").forEach(spinner => {
+    const rotorId = spinner.dataset.rotor + "-letter";
+    const display = document.getElementById(rotorId);
+    let index = 0;
+
+    spinner.querySelector(".up").addEventListener("click", () => {
+      index = (index - 1 + 26) % 26;
+      display.textContent = alphabet[index];
+    });
+
+    spinner.querySelector(".down").addEventListener("click", () => {
+      index = (index + 1) % 26;
+      display.textContent = alphabet[index];
     });
   });
 });
