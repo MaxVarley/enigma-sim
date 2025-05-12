@@ -90,19 +90,25 @@
   width: 60px;
   margin-left: 0;
 }
-
-
+  
   .rotor-window {
     position: relative;
     overflow: hidden;
+    height: 50px;
+    display: flex;        
+    justify-content: center;
+    align-items: center;
   }
 
-  .rotor-letter {
+
+  .rotor-letter,
+  .ring-value {
     position: absolute;
     width: 100%;
     text-align: center;
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
+
 
   .shown {
     opacity: 1;
