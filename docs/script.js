@@ -33,3 +33,19 @@ function runEnigma() {
 Module.onRuntimeInitialized = () => {
   document.querySelector("button").disabled = false;
 };
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tabs = document.querySelectorAll(".tabs ul li");
+  const contents = document.querySelectorAll(".tab-content");
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("is-active"));
+      contents.forEach(c => c.classList.add("is-hidden"));
+
+      tab.classList.add("is-active");
+      contents[i].classList.remove("is-hidden");
+    });
+  });
+});
+
