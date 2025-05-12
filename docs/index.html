@@ -93,17 +93,28 @@
 
 
   .rotor-window {
-    background-color: #F5F0E1;
-    border: 2px solid #A1864E;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin: 5px 0;
+    position: relative;
+    overflow: hidden;
   }
+
+  .rotor-letter {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .shown {
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 1;
+  }
+
+  .hidden {
+    opacity: 0;
+    z-index: 0;
+  }
+
 
   .rotor-btn {
     background-color: #333;
@@ -121,11 +132,6 @@
     background-color: #555;
   }
 
-  .rotor-letter,
-  .ring-value {
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-
   .spin-up {
     transform: translateY(-10px);
     opacity: 0;
@@ -135,8 +141,6 @@
     transform: translateY(10px);
     opacity: 0;
   }
-
-
 
   </style>
   
@@ -176,9 +180,10 @@
           <label class="label mt-3">Initial Position</label>
           <div class="rotor-spin" data-rotor="rotor1">
             <button class="rotor-btn up">▲</button>
-            <div class="rotor-window">
-              <div class="rotor-letter" id="rotor1-letter">A</div>
-            </div>
+            <div class="rotor-window" id="rotor1-letter-window">
+              <div class="rotor-letter shown">A</div>
+              <div class="rotor-letter hidden"></div>
+            </div>            
             <button class="rotor-btn down">▼</button>
           </div>
       
@@ -186,8 +191,9 @@
           <label class="label mt-3">Ring Setting</label>
           <div class="ring-spin" data-ring="rotor1">
             <button class="rotor-btn up">▲</button>
-            <div class="rotor-window">
-              <div class="ring-value" id="rotor1-ring">01</div>
+            <div class="rotor-window" id="rotor1-ring-window">
+              <div class="ring-value shown">01</div>
+              <div class="ring-value hidden"></div>
             </div>
             <button class="rotor-btn down">▼</button>
           </div>
@@ -214,8 +220,9 @@
           <label class="label mt-3">Initial Position</label>
           <div class="rotor-spin" data-rotor="rotor2">
             <button class="rotor-btn up">▲</button>
-            <div class="rotor-window">
-              <div class="rotor-letter" id="rotor2-letter">A</div>
+            <div class="rotor-window" id="rotor2-letter-window">
+              <div class="rotor-letter shown">A</div>
+              <div class="rotor-letter hidden"></div>
             </div>
             <button class="rotor-btn down">▼</button>
           </div>
@@ -224,9 +231,10 @@
           <label class="label mt-3">Ring Setting</label>
           <div class="ring-spin" data-ring="rotor2">
             <button class="rotor-btn up">▲</button>
-            <div class="rotor-window">
-              <div class="ring-value" id="rotor2-ring">01</div>
-            </div>
+            <div class="rotor-window" id="rotor2-ring-window">
+              <div class="ring-value shown">01</div>
+              <div class="ring-value hidden"></div>
+            </div>            
             <button class="rotor-btn down">▼</button>
           </div>
 
@@ -252,9 +260,10 @@
           <label class="label mt-3">Initial Position</label>
           <div class="rotor-spin" data-rotor="rotor3">
             <button class="rotor-btn up">▲</button>
-            <div class="rotor-window">
-              <div class="rotor-letter" id="rotor3-letter">A</div>
-            </div>
+            <div class="rotor-window" id="rotor3-letter-window">
+              <div class="rotor-letter shown">A</div>
+              <div class="rotor-letter hidden"></div>
+            </div>            
             <button class="rotor-btn down">▼</button>
           </div>
 
@@ -262,8 +271,9 @@
           <label class="label mt-3">Ring Setting</label>
           <div class="ring-spin" data-ring="rotor3">
             <button class="rotor-btn up">▲</button>
-            <div class="rotor-window">
-              <div class="ring-value" id="rotor3-ring">01</div>
+            <div class="rotor-window" id="rotor3-ring-window">
+              <div class="ring-value shown">01</div>
+              <div class="ring-value hidden"></div>
             </div>
             <button class="rotor-btn down">▼</button>
           </div>

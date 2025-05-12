@@ -49,31 +49,37 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  const animateAndSet = (el, newVal, direction) => {
-    const exitClass = direction === "up" ? "spin-up" : "spin-down";
+  const animateAndSet = (windowEl, newVal, direction) => {
+    const [shownEl, hiddenEl] = windowEl.querySelectorAll(".rotor-letter");
     
-      // Exit animation
-      el.classList.add(exitClass);
-    
-      setTimeout(() => {
-        // Immediately reset to neutral before re-entering
-        el.classList.remove(exitClass);
-        el.style.transition = "none";
-        el.style.transform = direction === "up" ? "translateY(10px)" : "translateY(-10px)";
-        el.style.opacity = "0";
-        el.textContent = newVal;
-    
-        // Force browser reflow to ensure transition will happen
-        void el.offsetWidth;
-    
-        // Now animate in
-        el.style.transition = "transform 0.2s ease, opacity 0.2s ease";
-        el.style.transform = "translateY(0)";
-        el.style.opacity = "1";
-      }, 150);
-    };
+    // Setup hidden element with new value
+    hiddenEl.textContent = newVal;
+    hiddenEl.style.transition = "none";
+    hiddenEl.style.opacity = "0";
+    hiddenEl.style.transform = direction === "up" ? "translateY(100%)" : "translateY(-100%)";
   
+    // Force reflow
+    void hiddenEl.offsetWidth;
   
+    // Animate both elements
+    shownEl.style.transition = "transform 0.2s ease, opacity 0.2s ease";
+    hiddenEl.style.transition = "transform 0.2s ease, opacity 0.2s ease";
+  
+    shownEl.style.transform = direction === "up" ? "translateY(-100%)" : "translateY(100%)";
+    shownEl.style.opacity = "0";
+  
+    hiddenEl.style.transform = "translateY(0)";
+    hiddenEl.style.opacity = "1";
+  
+    // After animation, swap classes
+    setTimeout(() => {
+      shownEl.classList.remove("shown");
+      shownEl.classList.add("hidden");
+  
+      hiddenEl.classList.remove("hidden");
+      hiddenEl.classList.add("shown");
+    }, 200);
+  };
 
   // Rotor Spinners
   const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
