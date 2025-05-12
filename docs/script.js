@@ -51,21 +51,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const animateAndSet = (el, newVal, direction) => {
     const exitClass = direction === "up" ? "spin-up" : "spin-down";
-    const entryClass = direction === "up" ? "spin-down" : "spin-up";
-  
-    el.classList.add(exitClass);
-  
-    setTimeout(() => {
-      el.textContent = newVal;
-      el.classList.remove(exitClass);
-      el.classList.add(entryClass);
-  
-      // Remove entry animation after it's played
+    
+      // Exit animation
+      el.classList.add(exitClass);
+    
       setTimeout(() => {
-        el.classList.remove(entryClass);
+        // Immediately reset to neutral before re-entering
+        el.classList.remove(exitClass);
+        el.style.transition = "none";
+        el.style.transform = direction === "up" ? "translateY(10px)" : "translateY(-10px)";
+        el.style.opacity = "0";
+        el.textContent = newVal;
+    
+        // Force browser reflow to ensure transition will happen
+        void el.offsetWidth;
+    
+        // Now animate in
+        el.style.transition = "transform 0.2s ease, opacity 0.2s ease";
+        el.style.transform = "translateY(0)";
+        el.style.opacity = "1";
       }, 150);
-    }, 150);
-  };
+    };
+  
   
 
   // Rotor Spinners
