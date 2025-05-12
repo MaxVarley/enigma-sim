@@ -348,24 +348,36 @@
     
       <div id="tab-history" class="tab-content">
         <p>
-          The Enigma machine was a cipher device used by Nazi Germany during WWII to encrypt communications.
-          Allied cryptographers, notably at Bletchley Park under Alan Turing, cracked the cipher — a pivotal moment in the war.
+          The Enigma machine was an electromechanical cipher device developed in the early 1920s by German engineer Arthur Scherbius
+          Originally intended for commercial and diplomatic encryption, it was later adopted by the German military and became central to secure wartime communications during WWII.
+          By the outbreak of the war, the device had evolved into one of the most sophisticated encryption systems available for mass deployment,
+          with roughly 40,000 units eventually produced and distributed across all branches of the German military. 
+          The cipher's eventual decryption was a multinational effort. 
+          Polish cryptographers made early breakthroughs and developed tools such as the bomba kryptologiczna. 
+          These efforts were expanded upon at Bletchley Park by Allied cryptographers including Alan Turing, leading to the design of the British Bombe.
+          Cracking Enigma was a pivotal intelligence victory that helped shorten the war.
         </p>
       </div>
     
       <div id="tab-rotors" class="tab-content is-hidden">
         <p>
-          Rotors perform the core substitution of letters. Each rotor contains a scrambled alphabet and rotates with each keypress.
-          As they rotate, the encryption mapping changes, creating a polyalphabetic cipher. The stepping mechanism ensures one rotor turns the next,
-          similar to a mechanical odometer.
+          Rotors were the core components of the Enigma machine's encryption system.
+          Each rotor contained a scrambled wiring of the alphabet, internally hardwired in a complex tangle that mapped one letter to another. 
+          When a key was pressed, the electrical signal would pass through a series of these rotors, undergoing a different substitution at each stage.
+          Only the rightmost rotor (Rotor I) advanced with every keypress. The middle rotor advanced only when a notch on the first rotor allowed a ratchet and pawl mechanism to engage.
+          Similarly, the leftmost rotor advanced only when triggered by the notch on the second. This mechanism led to a characteristic called "double stepping", 
+          where the middle rotor would sometimes rotate on two consecutive keypresses. 
+          The mechanical design ensured that the encryption changed continuously, creating a polyalphabetic cipher with an enormous number of possible configurations, 
+          especially when multiple rotors were combined with varying initial positions and ring settings.
         </p>
       </div>
     
       <div id="tab-reflector" class="tab-content is-hidden">
         <p>
           The reflector returns the signal back through the rotors along a different path.
-          It ensures encryption is reciprocal — the same settings will both encrypt and decrypt.
-          This design choice, however, meant a letter could never encrypt to itself — a flaw exploited by Allied cryptanalysts.
+          It ensures encryption is reciprocal - the same settings will both encrypt and decrypt.
+          This design choice, however, meant a letter could never encrypt to itself. 
+          This may seem to enhance security, but it actually reduces the search space and was a feature exploited by codebreakers.
         </p>
       </div>
     
@@ -373,12 +385,10 @@
         <p>
           The plugboard (Steckerbrett) allowed pairs of letters to be swapped before and after rotor encryption,
           vastly increasing the possible configurations. Operators connected cables between letter pairs,
-          adding a configurable layer of complexity to the cipher.
+          adding another configurable layer of complexity to the cipher.
         </p>
       </div>
     </div>
-    
-  
 
   <div class="has-text-centered mt-6">
     <a href="https://github.com/MaxVarley/enigma-sim" target="_blank" class="button is-light">
