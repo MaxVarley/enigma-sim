@@ -50,13 +50,23 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const animateAndSet = (el, newVal, direction) => {
-    const className = direction === "up" ? "spin-up" : "spin-down";
-    el.classList.add(className);
+    const exitClass = direction === "up" ? "spin-up" : "spin-down";
+    const entryClass = direction === "up" ? "spin-down" : "spin-up";
+  
+    el.classList.add(exitClass);
+  
     setTimeout(() => {
       el.textContent = newVal;
-      el.classList.remove(className);
-    }, 150); // duration matches your CSS transition
-  };  
+      el.classList.remove(exitClass);
+      el.classList.add(entryClass);
+  
+      // Remove entry animation after it's played
+      setTimeout(() => {
+        el.classList.remove(entryClass);
+      }, 150);
+    }, 150);
+  };
+  
 
   // Rotor Spinners
   const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
