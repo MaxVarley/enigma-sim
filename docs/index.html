@@ -167,16 +167,14 @@
       
 
           <label class="label mt-3">Ring Setting</label>
-          <div class="select">
-            <select id="rotor1-ring">
-              <!-- 01-26 -->
-              <script>
-                for (let i = 1; i <= 26; i++) {
-                  document.write(`<option>${String(i).padStart(2, '0')}</option>`);
-                }
-              </script>
-            </select>
+          <div class="ring-spin" data-ring="rotor1">
+            <button class="rotor-btn up">▲</button>
+            <div class="rotor-window">
+              <div class="ring-value" id="rotor1-ring">01</div>
+            </div>
+            <button class="rotor-btn down">▼</button>
           </div>
+
         </div>
       </div>
 
@@ -197,26 +195,24 @@
           </div>
 
           <label class="label mt-3">Initial Position</label>
-          <div class="select">
-            <select id="rotor2-position">
-              <script>
-                for (let i = 65; i <= 90; i++) {
-                  document.write(`<option>${String.fromCharCode(i)}</option>`);
-                }
-              </script>
-            </select>
+          <div class="rotor-spin" data-rotor="rotor2">
+            <button class="rotor-btn up">▲</button>
+            <div class="rotor-window">
+              <div class="rotor-letter" id="rotor2-letter">A</div>
+            </div>
+            <button class="rotor-btn down">▼</button>
           </div>
 
+
           <label class="label mt-3">Ring Setting</label>
-          <div class="select">
-            <select id="rotor2-ring">
-              <script>
-                for (let i = 1; i <= 26; i++) {
-                  document.write(`<option>${String(i).padStart(2, '0')}</option>`);
-                }
-              </script>
-            </select>
+          <div class="ring-spin" data-ring="rotor2">
+            <button class="rotor-btn up">▲</button>
+            <div class="rotor-window">
+              <div class="ring-value" id="rotor2-ring">01</div>
+            </div>
+            <button class="rotor-btn down">▼</button>
           </div>
+
         </div>
       </div>
 
@@ -237,26 +233,25 @@
           </div>
 
           <label class="label mt-3">Initial Position</label>
-          <div class="select">
-            <select id="rotor3-position">
-              <script>
-                for (let i = 65; i <= 90; i++) {
-                  document.write(`<option>${String.fromCharCode(i)}</option>`);
-                }
-              </script>
-            </select>
+          <div class="rotor-spin" data-rotor="rotor3">
+            <button class="rotor-btn up">▲</button>
+            <div class="rotor-window">
+              <div class="rotor-letter" id="rotor3-letter">A</div>
+            </div>
+            <button class="rotor-btn down">▼</button>
           </div>
 
+
           <label class="label mt-3">Ring Setting</label>
-          <div class="select">
-            <select id="rotor3-ring">
-              <script>
-                for (let i = 1; i <= 26; i++) {
-                  document.write(`<option>${String(i).padStart(2, '0')}</option>`);
-                }
-              </script>
-            </select>
+          <div class="ring-spin" data-ring="rotor3">
+            <button class="rotor-btn up">▲</button>
+            <div class="rotor-window">
+              <div class="ring-value" id="rotor3-ring">01</div>
+            </div>
+            <button class="rotor-btn down">▼</button>
           </div>
+
+
         </div>
       </div>
     </div>

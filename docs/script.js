@@ -16,10 +16,10 @@ function runEnigma() {
   
   // Convert rotor positions to zero-based index
   const ringSettings = [
-    parseInt(document.getElementById("rotor1-ring").value, 10) - 1,
-    parseInt(document.getElementById("rotor2-ring").value, 10) - 1,
-    parseInt(document.getElementById("rotor3-ring").value, 10) - 1
-  ].map(n => String(n).padStart(2, '0')).join(" ");
+    document.getElementById("rotor1-ring").textContent,
+    document.getElementById("rotor2-ring").textContent,
+    document.getElementById("rotor3-ring").textContent
+  ].join(" ");
   
 
   const encrypt = Module.cwrap("encryptMessage", "string", [
@@ -55,18 +55,35 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".rotor-spin").forEach(spinner => {
     const rotorId = spinner.dataset.rotor + "-letter";
     const display = document.getElementById(rotorId);
-    let index = 0;
+    let index = alphabet.indexOf(display.textContent.trim()); // start at shown letter
 
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
       display.textContent = alphabet[index];
     });
-    
+
     spinner.querySelector(".rotor-btn.down").addEventListener("click", () => {
       index = (index + 1) % 26;
       display.textContent = alphabet[index];
     });
-    
   });
+
+  // Ring Spinners
+  document.querySelectorAll(".ring-spin").forEach(spinner => {
+    const ringId = spinner.dataset.ring + "-ring";
+    const display = document.getElementById(ringId);
+    let index = parseInt(display.textContent, 10) - 1 || 0;
+
+    spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
+      index = (index - 1 + 26) % 26;
+      display.textContent = String(index + 1).padStart(2, '0');
+    });
+
+    spinner.querySelector(".rotor-btn.down").addEventListener("click", () => {
+      index = (index + 1) % 26;
+      display.textContent = String(index + 1).padStart(2, '0');
+    });
+  });
+
 });
 
