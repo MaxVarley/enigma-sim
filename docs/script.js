@@ -85,39 +85,40 @@ document.addEventListener("DOMContentLoaded", () => {
   const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
 
   document.querySelectorAll(".rotor-spin").forEach(spinner => {
-    const rotorId = spinner.dataset.rotor + "-letter";
-    const display = document.getElementById(rotorId);
-    let index = alphabet.indexOf(display.textContent.trim()); // start at shown letter
-
+    const rotorId = spinner.dataset.rotor;
+    const windowEl = document.getElementById(rotorId + "-letter-window");
+    const display = windowEl.querySelector(".shown");
+    let index = alphabet.indexOf(display.textContent.trim());
+  
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
-      animateAndSet(display, alphabet[index], "up");
-
+      animateAndSet(windowEl, alphabet[index], "up");
     });
-
+  
     spinner.querySelector(".rotor-btn.down").addEventListener("click", () => {
       index = (index + 1) % 26;
-      animateAndSet(display, alphabet[index], "down");
-
+      animateAndSet(windowEl, alphabet[index], "down");
     });
   });
+  
 
   // Ring Spinners
   document.querySelectorAll(".ring-spin").forEach(spinner => {
-    const ringId = spinner.dataset.ring + "-ring";
-    const display = document.getElementById(ringId);
-    let index = parseInt(display.textContent, 10) - 1 || 0;
-
+    const ringId = spinner.dataset.ring;
+    const windowEl = document.getElementById(ringId + "-ring-window");
+    const display = windowEl.querySelector(".shown");
+    let index = parseInt(display.textContent.trim(), 10) - 1 || 0;
+  
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
-      animateAndSet(display, String(index + 1).padStart(2, '0'), "up");
+      animateAndSet(windowEl, String(index + 1).padStart(2, '0'), "up");
     });
-
+  
     spinner.querySelector(".rotor-btn.down").addEventListener("click", () => {
       index = (index + 1) % 26;
-      animateAndSet(display, String(index + 1).padStart(2, '0'), "down");
+      animateAndSet(windowEl, String(index + 1).padStart(2, '0'), "down");
     });
-  });
+  });  
 
 });
 
