@@ -20,6 +20,7 @@ function runEnigma() {
     document.querySelector("#rotor3-ring-window .shown").textContent
   ].join(" ");
   
+  
 
   const encrypt = Module.cwrap("encryptMessage", "string", [
     "string", "string", "string", "string", "string"
@@ -49,19 +50,18 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const animateAndSet = (windowEl, newVal, direction) => {
-    const [shownEl, hiddenEl] = windowEl.querySelectorAll(".shown, .hidden");
-
-    
-    // Setup hidden element with new value
+    const shownEl = windowEl.querySelector(".shown");
+    const hiddenEl = windowEl.querySelector(".hidden");
+  
+    // Prepare hidden element
     hiddenEl.textContent = newVal;
     hiddenEl.style.transition = "none";
-    hiddenEl.style.opacity = "0";
     hiddenEl.style.transform = direction === "up" ? "translateY(100%)" : "translateY(-100%)";
+    hiddenEl.style.opacity = "0";
   
-    // Force reflow
-    void hiddenEl.offsetWidth;
+    void hiddenEl.offsetWidth; // force reflow
   
-    // Animate both elements
+    // Animate both
     shownEl.style.transition = "transform 0.2s ease, opacity 0.2s ease";
     hiddenEl.style.transition = "transform 0.2s ease, opacity 0.2s ease";
   
@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
     hiddenEl.style.transform = "translateY(0)";
     hiddenEl.style.opacity = "1";
   
-    // After animation, swap classes
     setTimeout(() => {
       shownEl.classList.remove("shown");
       shownEl.classList.add("hidden");
@@ -80,9 +79,11 @@ document.addEventListener("DOMContentLoaded", () => {
       hiddenEl.classList.add("shown");
     }, 200);
   };
+  
 
   // Rotor Spinners
   const alphabet = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+
   document.querySelectorAll(".rotor-spin").forEach(spinner => {
     const rotorId = spinner.dataset.rotor;
     const windowEl = document.getElementById(rotorId + "-letter-window");
@@ -99,7 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
       index = (index + 1) % 26;
       animateAndSet(windowEl, alphabet[index], "down");
     });
-  });  
+  });
+  
   
 
   // Ring Spinners
@@ -107,9 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const ringId = spinner.dataset.ring;
     const windowEl = document.getElementById(ringId + "-ring-window");
     const display = windowEl.querySelector(".shown");
-    let parsed = parseInt(display.textContent.trim(), 10);
+    let parsed = parseInt(display?.textContent.trim(), 10);
     let index = isNaN(parsed) ? 0 : parsed - 1;
-
   
     spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
@@ -120,7 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
       index = (index + 1) % 26;
       animateAndSet(windowEl, String(index + 1).padStart(2, '0'), "down");
     });
-  });  
+  });
+   
 
 });
 
