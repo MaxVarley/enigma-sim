@@ -76,6 +76,62 @@ document.addEventListener("DOMContentLoaded", () => {
       hiddenEl.classList.remove("hidden");
       hiddenEl.classList.add("shown");
     }, 200);
+
+    // Plugboard setup
+    const plugboardContainer = document.getElementById("plugboard-ui");
+    const hiddenPlugboard = document.getElementById("plugboard");
+    const plugPairs = {};
+    let selected = null;
+
+    const updatePlugboardString = () => {
+      const pairs = Object.entries(plugPairs).filter(([a, b]) => a < b);
+      hiddenPlugboard.value = pairs.map(([a, b]) => a + b).join(" ");
+    };
+
+    [...Array(26)].forEach((_, i) => {
+      const letter = String.fromCharCode(65 + i);
+      const btn = document.createElement("button");
+      btn.className = "button";
+      btn.textContent = letter;
+
+      btn.addEventListener("click", () => {
+        if (plugPairs[letter]) {
+          // Already paired — remove both
+          const other = plugPairs[letter];
+          delete plugPairs[letter];
+          delete plugPairs[other];
+          document.querySelector(`[data-letter='${other}']`).classList.remove("paired");
+          btn.classList.remove("paired");
+          updatePlugboardString();
+          return;
+        }
+
+        if (selected === letter) {
+          selected = null;
+          btn.classList.remove("selected");
+          return;
+        }
+
+        if (selected === null) {
+          selected = letter;
+          btn.classList.add("selected");
+        } else {
+          // Create pair
+          plugPairs[selected] = letter;
+          plugPairs[letter] = selected;
+
+          document.querySelector(`[data-letter='${selected}']`).classList.remove("selected");
+          document.querySelector(`[data-letter='${selected}']`).classList.add("paired");
+          btn.classList.add("paired");
+
+          selected = null;
+          updatePlugboardString();
+        }
+      });
+
+      btn.setAttribute("data-letter", letter);
+      plugboardContainer.appendChild(btn);
+    });
   };
   
 

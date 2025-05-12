@@ -153,6 +153,24 @@
     opacity: 0;
   }
 
+  #plugboard-ui .button {
+    width: 40px;
+    height: 40px;
+    margin: 4px;
+    font-weight: bold;
+    font-family: 'Courier New', Courier, monospace;
+    border-radius: 5px;
+  }
+
+  #plugboard-ui .paired {
+    background-color: #8b0000 !important;
+    color: #fff;
+  }
+  #plugboard-ui .selected {
+    border: 2px solid #fff;
+    box-shadow: 0 0 4px #fff;
+  }
+
   </style>
   
 </head>
@@ -297,11 +315,11 @@
 
     <!-- Plugboard and Encrypt -->
     <div class="field">
-      <label class="label">Plugboard Pairs</label>
-      <div class="control">
-        <input class="input" id="plugboard" type="text" value="AB CD EF GH" />
-      </div>
+      <label class="label">Plugboard</label>
+      <div id="plugboard-ui" class="buttons is-flex is-wrap"></div>
+      <input type="hidden" id="plugboard" />
     </div>
+    
 
     <div class="field is-grouped is-grouped-centered mt-5">
       <div class="control">
