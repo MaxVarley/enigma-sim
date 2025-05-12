@@ -5,7 +5,6 @@
   <title>Enigma Machine Simulator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-  <script src="enigma.js"></script>
   <style>
     body {
       font-family: 'Courier New', Courier, monospace;
@@ -85,12 +84,13 @@
   }
 
   .rotor-spin {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 60px;
-    margin: 0 auto;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  width: 60px;
+  margin-left: 0;
+}
+
 
   .rotor-window {
     background-color: #F5F0E1;
@@ -125,7 +125,6 @@
   </style>
   
 </head>
-<script src="script.js" defer></script>
 <body>
 <section class="section">
   <div class="container">
@@ -330,5 +329,6 @@
   </div>
   
 </section>
+<script src="script.js"></script>
 </body>
 </html>
