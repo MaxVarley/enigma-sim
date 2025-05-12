@@ -166,9 +166,10 @@
     <div class="field">
       <label class="label">Message</label>
       <div class="control">
-        <input class="input" id="inputText" type="text" placeholder="HELLOWORLD" />
+        <textarea class="textarea" id="inputText" rows="6" placeholder="Enter your plaintext here..."></textarea>
       </div>
     </div>
+    
 
     <!-- Rotor Configuration Blocks -->
     <div class="columns">
@@ -310,9 +311,10 @@
 
     <div class="content mt-6">
       <h2 class="subtitle">Encrypted Output:</h2>
-      <div id="output" class="box has-background-light"></div>
+      <div class="control">
+        <textarea class="textarea" id="output" rows="6" readonly></textarea>
+      </div>
     </div>
-  </div>
   
     <!-- Info Tabs -->
     <div class="box mt-6">
