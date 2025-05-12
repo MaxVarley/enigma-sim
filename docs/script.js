@@ -57,15 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const display = document.getElementById(rotorId);
     let index = 0;
 
-    spinner.querySelector(".up").addEventListener("click", () => {
+    spinner.querySelector(".rotor-btn.up").addEventListener("click", () => {
       index = (index - 1 + 26) % 26;
       display.textContent = alphabet[index];
     });
-
-    spinner.querySelector(".down").addEventListener("click", () => {
+    
+    spinner.querySelector(".rotor-btn.down").addEventListener("click", () => {
       index = (index + 1) % 26;
       display.textContent = alphabet[index];
     });
+    
   });
 });
 
