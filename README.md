@@ -15,7 +15,7 @@ This project lets users experiment with the historic German Cipher machine, prim
 ### Features
 
 - Up to 3 rotors based on historical wiring configuration (choose type, position, and ring settings)
-- Reflector B
+- Reflector A, B, or C
 - Configurable plugboard connections
 - Runs entirely in browser via WebAssembly
 
