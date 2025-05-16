@@ -17,7 +17,8 @@ std::string runEnigma(const std::string& input,
                       const std::vector<std::string>& rotorOrder,
                       const std::vector<char>& rotorPositions,
                       const std::vector<int>& ringSettings,
-                      const std::string& plugboardPairs) {
+                      const std::string& plugboardPairs,
+                      const std::string& reflectorWiring) {
 
     // Historically accurate rotor wirings and notches
     std::map<std::string, std::pair<std::string, char>> rotorDefs = {
@@ -35,9 +36,8 @@ std::string runEnigma(const std::string& input,
         rotors.emplace_back(wiring, notch, ringSettings[i], rotorPositions[i]);
     }
 
-    // Hardcoded reflector wiring (UKW-B)
-    // This is a common reflector used in the Enigma machine.
-    Reflector reflector("YRUHQSLDPXNGOKMIEBFZCWVJAT");
+    // reflector wiring
+    Reflector reflector(reflectorWiring);
     Plugboard plugboard(plugboardPairs);
 
     EnigmaMachine machine(rotors, reflector, plugboard);
@@ -48,11 +48,12 @@ std::string runEnigma(const std::string& input,
 extern "C" {
 EMSCRIPTEN_KEEPALIVE
 const char* encryptMessage(const char* input,
-                           const char* rotorOrder,     // e.g. "I II III"
-                           const char* positions,      // e.g. "ABC"
-                           const char* ringSettings,   // e.g. "01 02 03"
-                           const char* plugboardPairs) // e.g. "AB CD"
-{
+                           const char* rotorOrder,
+                           const char* positions,
+                           const char* ringSettings,
+                           const char* plugboardPairs,
+                           const char* reflectorWiring) {
+
     static std::string output;
 
     // Parse rotor order
@@ -73,30 +74,8 @@ const char* encryptMessage(const char* input,
     int ring;
     while (ringStream >> ring) rings.push_back(ring);
 
-    output = runEnigma(input, rotorNames, positionsVec, rings, plugboardPairs);
+    output = runEnigma(input, rotorNames, positionsVec, rings, plugboardPairs, reflectorWiring);
     return output.c_str();
 }
-}
-#endif
-
-// Console mode for local testing
-#ifndef __EMSCRIPTEN__
-int main() {
-    std::string input;
-    std::cout << "Enter message (A-Z only): ";
-    std::getline(std::cin, input);
-
-    // Testing with hardcoded values
-    std::string encrypted = runEnigma(
-        input,
-        {"I", "II", "III"},
-        {'A', 'A', 'A'},
-        {0, 0, 0},
-        "AB CD EF GH"
-    );
-
-    std::cout << "Encrypted: " << encrypted << "\n";
-    std::cin.get();
-    return 0;
 }
 #endif

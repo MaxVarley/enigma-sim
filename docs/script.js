@@ -2,6 +2,17 @@ function runEnigma() {
   const input = document.getElementById("inputText").value;
   const plugboard = document.getElementById("plugboard").value;
 
+const reflectors = {
+  A: "EJMZALYXVBWFCRQUONTSPIKHGD",
+  B: "YRUHQSLDPXNGOKMIEBFZCWVJAT",
+  C: "FVPJIAOYEDRZXWGCTKUQSBNMHL"
+};
+
+function getSelectedReflectorWiring() {
+  const selected = document.getElementById("reflector-type").value;
+  return reflectors[selected];
+}
+
   const rotorTypes = [
     document.getElementById("rotor1-type").value,
     document.getElementById("rotor2-type").value,
@@ -21,10 +32,12 @@ function runEnigma() {
   ].map(s => String(parseInt(s, 10) - 1).padStart(2, '0')).join(" ");  
 
   const encrypt = Module.cwrap("encryptMessage", "string", [
-    "string", "string", "string", "string", "string"
+    "string", "string", "string", "string", "string", "string"
   ]);
 
-  const result = encrypt(input, rotorTypes, rotorPositions, ringSettings, plugboard);
+  const reflectorWiring = getSelectedReflectorWiring();
+
+  const result = encrypt(input, rotorTypes, rotorPositions, ringSettings, plugboard, reflectorWiring);
   document.getElementById("output").value = result;
 }
 

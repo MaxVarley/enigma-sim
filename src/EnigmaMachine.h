@@ -14,6 +14,8 @@ class EnigmaMachine {
 
         void stepRotors();
 
+        void setReflector(const Reflector& reflector);
+
     private:
         std::vector<Rotor> rotors_;
         Reflector reflector_;

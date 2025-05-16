@@ -11,6 +11,9 @@
 EnigmaMachine::EnigmaMachine(const std::vector<Rotor>& rotors, Reflector reflector, Plugboard plugboard)
     : rotors_(rotors), reflector_(reflector), plugboard_(plugboard) {}
 
+void EnigmaMachine::setReflector(const Reflector& reflector) {
+    reflector_ = reflector;
+}
 
 void EnigmaMachine::stepRotors() {
     bool rightAtNotch = rotors_[0].atNotch();
