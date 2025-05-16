@@ -17,17 +17,10 @@ var Module = typeof Module != 'undefined' ? Module : {};
 // Determine the runtime environment we are in. You can customize this by
 // setting the ENVIRONMENT setting at compile time (see settings.js).
 
-// Attempt to auto-detect the environment
-var ENVIRONMENT_IS_WEB = typeof window == 'object';
-var ENVIRONMENT_IS_WORKER = typeof WorkerGlobalScope != 'undefined';
-// N.b. Electron.js environment is simultaneously a NODE-environment, but
-// also a web environment.
-var ENVIRONMENT_IS_NODE = typeof process == 'object' && typeof process.versions == 'object' && typeof process.versions.node == 'string' && process.type != 'renderer';
-var ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIRONMENT_IS_WORKER;
-
-if (ENVIRONMENT_IS_NODE) {
-
-}
+var ENVIRONMENT_IS_WEB = true;
+var ENVIRONMENT_IS_WORKER = false;
+var ENVIRONMENT_IS_NODE = false;
+var ENVIRONMENT_IS_SHELL = false;
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
@@ -43,13 +36,6 @@ var quit_ = (status, toThrow) => {
 // before the page load. In non-MODULARIZE modes generate it here.
 var _scriptName = typeof document != 'undefined' ? document.currentScript?.src : undefined;
 
-if (typeof __filename != 'undefined') { // Node
-  _scriptName = __filename;
-} else
-if (ENVIRONMENT_IS_WORKER) {
-  _scriptName = self.location.href;
-}
-
 // `/` should be present at the end if `scriptDirectory` is not empty
 var scriptDirectory = '';
 function locateFile(path) {
@@ -62,58 +48,6 @@ function locateFile(path) {
 // Hooks that are implemented differently in different runtime environments.
 var readAsync, readBinary;
 
-if (ENVIRONMENT_IS_NODE) {
-  if (typeof process == 'undefined' || !process.release || process.release.name !== 'node') throw new Error('not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)');
-
-  var nodeVersion = process.versions.node;
-  var numericVersion = nodeVersion.split('.').slice(0, 3);
-  numericVersion = (numericVersion[0] * 10000) + (numericVersion[1] * 100) + (numericVersion[2].split('-')[0] * 1);
-  var minVersion = 160000;
-  if (numericVersion < 160000) {
-    throw new Error('This emscripten-generated code requires node v16.0.0 (detected v' + nodeVersion + ')');
-  }
-
-  // These modules will usually be used on Node.js. Load them eagerly to avoid
-  // the complexity of lazy-loading.
-  var fs = require('fs');
-  var nodePath = require('path');
-
-  scriptDirectory = __dirname + '/';
-
-// include: node_shell_read.js
-readBinary = (filename) => {
-  // We need to re-wrap `file://` strings to URLs.
-  filename = isFileURI(filename) ? new URL(filename) : filename;
-  var ret = fs.readFileSync(filename);
-  assert(Buffer.isBuffer(ret));
-  return ret;
-};
-
-readAsync = async (filename, binary = true) => {
-  // See the comment in the `readBinary` function.
-  filename = isFileURI(filename) ? new URL(filename) : filename;
-  var ret = fs.readFileSync(filename, binary ? undefined : 'utf8');
-  assert(binary ? Buffer.isBuffer(ret) : typeof ret == 'string');
-  return ret;
-};
-// end include: node_shell_read.js
-  if (process.argv.length > 1) {
-    thisProgram = process.argv[1].replace(/\\/g, '/');
-  }
-
-  arguments_ = process.argv.slice(2);
-
-  // MODULARIZE will export the module in the proper place outside, we don't need to export here
-  if (typeof module != 'undefined') {
-    module['exports'] = Module;
-  }
-
-  quit_ = (status, toThrow) => {
-    process.exitCode = status;
-    throw toThrow;
-  };
-
-} else
 if (ENVIRONMENT_IS_SHELL) {
 
   if ((typeof process == 'object' && typeof require === 'function') || typeof window == 'object' || typeof WorkerGlobalScope != 'undefined') throw new Error('not compiled for this environment (did you build to HTML and try to run it not on the web, or set ENVIRONMENT to something - like node - and run it someplace else - like on the web?)');
@@ -135,37 +69,8 @@ if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
 
   {
 // include: web_or_worker_shell_read.js
-if (ENVIRONMENT_IS_WORKER) {
-    readBinary = (url) => {
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', url, false);
-      xhr.responseType = 'arraybuffer';
-      xhr.send(null);
-      return new Uint8Array(/** @type{!ArrayBuffer} */(xhr.response));
-    };
-  }
-
-  readAsync = async (url) => {
-    // Fetch has some additional restrictions over XHR, like it can't be used on a file:// url.
-    // See https://github.com/github/fetch/pull/92#issuecomment-140665932
-    // Cordova or Electron apps are typically loaded from a file:// url.
-    // So use XHR on webview if URL is a file URL.
-    if (isFileURI(url)) {
-      return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.responseType = 'arraybuffer';
-        xhr.onload = () => {
-          if (xhr.status == 200 || (xhr.status == 0 && xhr.response)) { // file URLs can return 0
-            resolve(xhr.response);
-            return;
-          }
-          reject(xhr.status);
-        };
-        xhr.onerror = reject;
-        xhr.send(null);
-      });
-    }
+readAsync = async (url) => {
+    assert(!isFileURI(url), "readAsync does not work with file:// URLs");
     var response = await fetch(url, { credentials: 'same-origin' });
     if (response.ok) {
       return response.arrayBuffer();
@@ -194,6 +99,10 @@ var NODEFS = 'NODEFS is no longer included by default; build with -lnodefs.js';
 
 // perform assertions in shell.js after we set up out() and err(), as otherwise
 // if an assertion fails it cannot print the message
+
+assert(!ENVIRONMENT_IS_WORKER, 'worker environment detected but not enabled at build time.  Add `worker` to `-sENVIRONMENT` to enable.');
+
+assert(!ENVIRONMENT_IS_NODE, 'node environment detected but not enabled at build time.  Add `node` to `-sENVIRONMENT` to enable.');
 
 assert(!ENVIRONMENT_IS_SHELL, 'shell environment detected but not enabled at build time.  Add `shell` to `-sENVIRONMENT` to enable.');
 
@@ -700,15 +609,6 @@ async function instantiateArrayBuffer(binaryFile, imports) {
 
 async function instantiateAsync(binary, binaryFile, imports) {
   if (!binary && typeof WebAssembly.instantiateStreaming == 'function'
-      // Don't use streaming for file:// delivered objects in a webview, fetch them synchronously.
-      && !isFileURI(binaryFile)
-      // Avoid instantiateStreaming() on Node.js environment for now, as while
-      // Node.js v18.1.0 implements it, it does not have a full fetch()
-      // implementation yet.
-      //
-      // Reference:
-      //   https://github.com/emscripten-core/emscripten/pull/16917
-      && !ENVIRONMENT_IS_NODE
      ) {
     try {
       var response = fetch(binaryFile, { credentials: 'same-origin' });
@@ -882,7 +782,6 @@ async function createWasm() {
       warnOnce.shown ||= {};
       if (!warnOnce.shown[text]) {
         warnOnce.shown[text] = 1;
-        if (ENVIRONMENT_IS_NODE) text = 'warning: ' + text;
         err(text);
       }
     };
@@ -1285,6 +1184,96 @@ async function createWasm() {
       HEAPU32[((pnum)>>2)] = num;
       return 0;
     };
+
+  var getCFunc = (ident) => {
+      var func = Module['_' + ident]; // closure exported function
+      assert(func, 'Cannot call unknown function ' + ident + ', make sure it is exported');
+      return func;
+    };
+  
+  var writeArrayToMemory = (array, buffer) => {
+      assert(array.length >= 0, 'writeArrayToMemory array must have a length (should be an array or typed array)')
+      HEAP8.set(array, buffer);
+    };
+  
+  
+  
+  var stackAlloc = (sz) => __emscripten_stack_alloc(sz);
+  var stringToUTF8OnStack = (str) => {
+      var size = lengthBytesUTF8(str) + 1;
+      var ret = stackAlloc(size);
+      stringToUTF8(str, ret, size);
+      return ret;
+    };
+  
+  
+  
+  
+  
+    /**
+     * @param {string|null=} returnType
+     * @param {Array=} argTypes
+     * @param {Arguments|Array=} args
+     * @param {Object=} opts
+     */
+  var ccall = (ident, returnType, argTypes, args, opts) => {
+      // For fast lookup of conversion functions
+      var toC = {
+        'string': (str) => {
+          var ret = 0;
+          if (str !== null && str !== undefined && str !== 0) { // null string
+            ret = stringToUTF8OnStack(str);
+          }
+          return ret;
+        },
+        'array': (arr) => {
+          var ret = stackAlloc(arr.length);
+          writeArrayToMemory(arr, ret);
+          return ret;
+        }
+      };
+  
+      function convertReturnValue(ret) {
+        if (returnType === 'string') {
+          return UTF8ToString(ret);
+        }
+        if (returnType === 'boolean') return Boolean(ret);
+        return ret;
+      }
+  
+      var func = getCFunc(ident);
+      var cArgs = [];
+      var stack = 0;
+      assert(returnType !== 'array', 'Return type should not be "array".');
+      if (args) {
+        for (var i = 0; i < args.length; i++) {
+          var converter = toC[argTypes[i]];
+          if (converter) {
+            if (stack === 0) stack = stackSave();
+            cArgs[i] = converter(args[i]);
+          } else {
+            cArgs[i] = args[i];
+          }
+        }
+      }
+      var ret = func(...cArgs);
+      function onDone(ret) {
+        if (stack !== 0) stackRestore(stack);
+        return convertReturnValue(ret);
+      }
+  
+      ret = onDone(ret);
+      return ret;
+    };
+  
+    /**
+     * @param {string=} returnType
+     * @param {Array=} argTypes
+     * @param {Object=} opts
+     */
+  var cwrap = (ident, returnType, argTypes, opts) => {
+      return (...args) => ccall(ident, returnType, argTypes, args, opts);
+    };
 // End JS library code
 
 // include: postlibrary.js
@@ -1328,6 +1317,7 @@ Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
 }
 
 // Begin runtime exports
+  Module['cwrap'] = cwrap;
   var missingLibrarySymbols = [
   'writeI53ToI64',
   'writeI53ToI64Clamped',
@@ -1339,7 +1329,6 @@ Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
   'convertI32PairToI53',
   'convertI32PairToI53Checked',
   'convertU32PairToI53',
-  'stackAlloc',
   'getTempRet0',
   'setTempRet0',
   'zeroMemory',
@@ -1380,9 +1369,6 @@ Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
   'STACK_ALIGN',
   'POINTER_SIZE',
   'ASSERTIONS',
-  'getCFunc',
-  'ccall',
-  'cwrap',
   'uleb128Encode',
   'sigToWasmTypes',
   'generateFuncType',
@@ -1408,8 +1394,6 @@ Module['FS_createPreloadedFile'] = FS.createPreloadedFile;
   'stringToUTF32',
   'lengthBytesUTF32',
   'stringToNewUTF8',
-  'stringToUTF8OnStack',
-  'writeArrayToMemory',
   'registerKeyEventCallback',
   'maybeCStringToJsString',
   'findEventTarget',
@@ -1542,6 +1526,7 @@ missingLibrarySymbols.forEach(missingLibrarySymbol)
   'bigintToI53Checked',
   'stackSave',
   'stackRestore',
+  'stackAlloc',
   'ptrToString',
   'abortOnCannotGrowMemory',
   'ENV',
@@ -1557,6 +1542,8 @@ missingLibrarySymbols.forEach(missingLibrarySymbol)
   'noExitRuntime',
   'addOnPreRun',
   'addOnPostRun',
+  'getCFunc',
+  'ccall',
   'freeTableIndexes',
   'functionsInTableMap',
   'setValue',
@@ -1570,6 +1557,8 @@ missingLibrarySymbols.forEach(missingLibrarySymbol)
   'stringToUTF8',
   'lengthBytesUTF8',
   'UTF16Decoder',
+  'stringToUTF8OnStack',
+  'writeArrayToMemory',
   'JSEvents',
   'specialHTMLTargets',
   'findCanvasEventTarget',
