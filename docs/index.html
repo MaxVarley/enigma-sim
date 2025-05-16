@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Enigma Machine Simulator</title>
   <link rel="shortcut icon" type="image/png" href="Enigma-logo.png">
+  <link rel="icon" type="image/png" href="Enigma-logo.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
   <style>
@@ -188,14 +189,19 @@
 <body>
 <section class="section">
   <div class="container">
-    <h1 class="title has-text-centered">Enigma Machine Simulator</h1>
+    <div class="box has-text-centered">
+      <h1 class="title">Enigma Machine Simulator</h1>
+    </div>
 
-    <div class="field">
-      <label class="label">Message</label>
-      <div class="control">
-        <textarea class="textarea" id="inputText" rows="6" placeholder="Enter your plaintext here..."></textarea>
+    <div class="box">
+      <div class="field">
+        <label class="label">Message</label>
+        <div class="control">
+          <textarea class="textarea" id="inputText" rows="6" placeholder="Enter your plaintext here..."></textarea>
+        </div>
       </div>
     </div>
+
     
 
     <!-- Rotor Configuration Blocks -->
@@ -323,11 +329,14 @@
     </div>
 
     <!-- Plugboard and Encrypt -->
-    <div class="field">
-      <label class="label">Plugboard</label>
-      <div id="plugboard-ui" class="buttons is-flex is-wrap"></div>
-      <input type="hidden" id="plugboard" />
+    <div class="box">
+      <div class="field">
+        <label class="label">Plugboard</label>
+        <div id="plugboard-ui" class="buttons is-flex is-wrap"></div>
+        <input type="hidden" id="plugboard" />
+      </div>
     </div>
+
     
 
     <div class="field is-grouped is-grouped-centered mt-5">
@@ -336,12 +345,15 @@
       </div>
     </div>
 
-    <div class="content mt-6">
-      <h2 class="title">Encrypted Output:</h2>
-      <div class="control">
-        <textarea class="textarea" id="output" rows="6" readonly></textarea>
+    <div class="box mt-6">
+      <div class="content">
+        <h2 class="title">Encrypted Output:</h2>
+        <div class="control">
+          <textarea class="textarea" id="output" rows="6" readonly></textarea>
+        </div>
       </div>
     </div>
+
   
     <!-- Info Tabs -->
     <div class="box mt-6">
